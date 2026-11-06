@@ -1,0 +1,10 @@
+# What is CI (Continuous Integration)?
+# CI (Continuous Integration) is a software development practice where developers frequently merge their code changes into a central repository, after which automated builds and tests are run.
+
+# In this assignment, CI (via GitHub Actions) serves as an automated gatekeeper. Every time we push code to the repository, the CI pipeline automatically:
+
+# Builds the application: Ensures that the Docker images can be constructed successfully.
+
+# Runs tests: Verifies that the services (Nginx, Backend, Frontend) are functional and communicating correctly.
+
+# Provides Feedback: If the build or tests fail, it alerts the developer immediately, allowing for faster debugging and ensuring that only stable, working code is merged.
