@@ -1,0 +1,43 @@
+services:
+  # 1. 数据库
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo_data:/data/db
+
+  # 2. 银行后端 (Python)
+  backend:
+    build: ./backend
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/bank_app
+    depends_on:
+      - mongo
+
+  # 3. 交易服务 (JavaScript)
+  transactions:
+    build: ./transactions
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/bank_app
+    depends_on:
+      - mongo
+
+  # 4. 前端服务
+  frontend:
+    build: ./studentportfolio
+
+  # 5. Nginx 反向代理
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # 下面这一行是关键：确保你的静态网页文件被挂载到 Nginx 的网页目录
+      - ./studentportfolio:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+      - transactions
+      - frontend
+
+volumes:
+  mongo_data:
